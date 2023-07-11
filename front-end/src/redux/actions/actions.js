@@ -1,4 +1,4 @@
-import { GET_DATA, GET_DETAIL } from "./actionTypes";
+import { GET_DATA, GET_DETAIL, GET_EPISODES } from "./actionTypes";
 import axios from "axios"
 
 export const getData = (URL_API) => {
@@ -21,3 +21,14 @@ export const getDetail = (URL_DETAIL) => {
     })
   }
 }
+
+export const getEpisode = (URL_EPISODE) => {
+  return (dispatch) => {
+    axios.get(URL_EPISODE).then((response) => {
+      dispatch({
+        type: GET_EPISODES,
+        payload: response.data,
+      });
+    });
+  };
+};

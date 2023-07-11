@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const [nav, setNav] = useState(false)
-  const [active, setActive] = useState("Characters")
+  const [active, setActive] = useState("")
 
     const links = [
       {

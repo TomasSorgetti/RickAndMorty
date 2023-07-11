@@ -15,7 +15,6 @@ const Detail = () => {
     dispatch(getDetail(URL_DETAIL));
   }, []);
     
-    
 
   return (
     <div>
@@ -28,10 +27,10 @@ const Detail = () => {
               alt={`detail from ${detail.name} character`}
             />
           </div>
-          <p>{detail.species}</p>
-          <p>{detail.gender}</p>
-          <p>{detail.status}</p>
-          <p>{detail.origin.name}</p>
+          <p>Specie:{detail.species}</p>
+          <p>Episodes:({detail.episode.length})</p>
+          <p>Gender:{detail.gender}</p>
+          <p>Status:{detail.status}</p>
         </>
       ) : (
         <p>Loading...</p>
