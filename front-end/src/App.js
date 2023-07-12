@@ -12,7 +12,7 @@ import Create from "./Views/Create/Create"
 import Profile from "./Views/Profile/Profile"
 import Locations from "./Views/Locations/Locations";
 import Episodes from "./Views/Episodes/Episodes";
-
+import CreateUser from "./Views/CreateUser/CreateUser";
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
         <Route path="/locations" element={<Locations />} />
         <Route path="/episodes" element={<Episodes />} />
         <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/createUser" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={<Create />} />
         <Route path="/profile" element={<Profile />} />

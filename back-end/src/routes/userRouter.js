@@ -6,10 +6,12 @@ const {
   postUserHandler,
   getUsersHandler,
   getUserByIdHandler,
+  userLoginHandler,
 } = require("../handlers/userHandlers");
 
 
 usersRouter.post("/", postUserHandler);
+usersRouter.post("/login", userLoginHandler);
 
 usersRouter.get("/", getUsersHandler);
 
