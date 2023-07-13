@@ -1,55 +1,76 @@
 //imports react
-import React,{useState} from 'react'
-import { Link } from 'react-router-dom';
-
-
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserData } from "../../redux/actions/actions";
+import Swal from "sweetalert2";
 
 const Navigation = () => {
-  const [nav, setNav] = useState(false)
-  const [active, setActive] = useState("")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state);
+  const token = localStorage.getItem("token");
+  const id = localStorage.getItem("userId");
 
-    const links = [
-      {
-        id: 1,
-        label: "Characters",
-        route: "/",
-      },
-      {
-        id: 2,
-        label: "Locations",
-        route: "/locations",
-      },
-      {
-        id: 3,
-        label: "Episodes",
-        route: "/episodes",
-      },
-  ];
-  const linksUser = [
+    const handleLogout = (e) => {
+      Swal.fire({
+        title: "Estas seguro de querer salir",
+        icon: "question",
+        confirmButtonText: "Ok",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          if (window.location.pathname !== "/") navigate("/");
+          else window.location.reload(true);
+        }
+      });
+  };
+  
+  useEffect(() => {
+    if (token && id) {
+      try {
+        dispatch(getUserData(id,token));
+      } catch (error) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        if (window.location.pathname !== "/") navigate("/");
+        else window.location.reload(true);
+      }
+    }
+  }, [token, id, dispatch]);
+
+  const [nav, setNav] = useState(false);
+  const [active, setActive] = useState("");
+
+  const links = [
     {
-      id: 4,
-      label: "Create",
-      route: "/create",
+      id: 1,
+      label: "Characters",
+      route: "/",
     },
     {
-      id: 5,
-      label: "Login",
-      route: "/login",
+      id: 2,
+      label: "Locations",
+      route: "/locations",
     },
     {
-      id: 6,
-      label: "Profile",
-      route: "/profile",
+      id: 3,
+      label: "Episodes",
+      route: "/episodes",
     },
   ];
   const handleClick = () => {
-    setNav(!nav)
-  }
+    setNav(!nav);
+  };
   const handleCancel = (label) => {
-    setNav(false)
-    setActive(label)
+    setNav(false);
+    setActive(label);
+  };
 
-  }
+
+
   return (
     <nav className="flex items-center justify-between flex-wrap p-8 lg:flex-row">
       <Link to="/">Rick and Morty</Link>
@@ -87,21 +108,31 @@ const Navigation = () => {
           ))}
         </ul>
         <ul className="flex flex-col gap-2 lg:flex lg:flex-row lg:gap-4 lg:pl-96">
-          {linksUser?.map(({ id, label, route }) => (
-            <li key={id}>
-              <Link
-                className={`${active === label ? "font-semibold" : ""}`}
-                onClick={() => handleCancel(label)}
-                to={route}
-              >
-                {label}
-              </Link>
+          {token && user.id ? (
+            <div>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+              {user.role === "admin" && (
+                <li>
+                  <Link to="/create">Create</Link>
+                </li>
+              )}
+              <li>
+                <button type="button" onClick={(e) => handleLogout(e)}>
+                  Logout
+                </button>
+              </li>
+            </div>
+          ) : (
+            <li>
+              <Link to="/login">Login</Link>
             </li>
-          ))}
+          )}
         </ul>
       </div>
     </nav>
   );
-}
+};
 
-export default Navigation
+export default Navigation;

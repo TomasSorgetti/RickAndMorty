@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate()
+
   const [form, setForm] = useState({
     name: "",
     password: "",
@@ -27,10 +28,10 @@ const Login = () => {
         await axios.post("http://localhost:3001/users/login", form)
           .then((response) => {
           const token = response.data.token;
-          const userId = response.data.id;
+            const userId = response.data.id;
           localStorage.setItem("token", token);
             localStorage.setItem("userId", userId);
-            if (token) {
+            if (token && userId) {
               navigate("/")
             }
         })  

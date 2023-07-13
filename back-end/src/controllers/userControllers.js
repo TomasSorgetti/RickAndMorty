@@ -1,6 +1,8 @@
 const { user } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const {refreshToken}=require("../jsw")
 const { ADMIN_PASSWORD, ADMIN_NAME, SECRET } = process.env;
 
 
@@ -15,7 +17,8 @@ const loginUser = async (name, password) => {
       const token = jwt.sign({ id: user.id, name: user.name }, SECRET, {
         expiresIn: "1m",
       });
-      return ({ token, id: user.id });
+      // const refresh = await refreshToken(userVerification.id);
+      return { token, id: userVerification.id };
     }
   }
 }
@@ -33,20 +36,22 @@ const postUser = async (name, password) => {
   const { password: userPassword, ...userWithoutPassword } = res.toJSON();
   return userWithoutPassword;
 };
-// const postUser = async (name, password, image) => {
-//   try {
-//     const hash = await bcrypt.hash(password, saltRounds);
-//     console.log(hash);
-//     return await user.create({ name, hash, image });
-//   } catch (error) {
-//     throw error
-//   }
-// };
+
+
 
 //***************** GET ********************//
 const getUserById = async (id) => {
-  return await user.findOne({ where: { id: id } });
+  // const publicKey = fs.readFileSync("public.pem", "utf8");
+  // console.log("publicKey", publicKey);
+
+  // const decoded = jwt.verify(token, publicKey);
+
+  return await user.findOne({ where: { id } }); 
+
 };
+
+
+
 
 module.exports = {
   postUser,
