@@ -10,36 +10,35 @@ const Navigation = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state);
   const token = localStorage.getItem("token");
-  const id = localStorage.getItem("userId");
 
     const handleLogout = (e) => {
       Swal.fire({
-        title: "Estas seguro de querer salir",
+        title: "Are you sure to logout?",
         icon: "question",
         confirmButtonText: "Ok",
         showCancelButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
           localStorage.removeItem("token");
-          localStorage.removeItem("userId");
-          if (window.location.pathname !== "/") navigate("/");
-          else window.location.reload(true);
+          navigate("/login");
+
         }
       });
   };
   
   useEffect(() => {
-    if (token && id) {
+    if (token) {
       try {
-        dispatch(getUserData(id,token));
+        dispatch(getUserData(token));
+        
       } catch (error) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        if (window.location.pathname !== "/") navigate("/");
-        else window.location.reload(true);
+        console.log("nav",error);
+        // localStorage.removeItem("token");
+        // if (window.location.pathname !== "/") navigate("/");
+        // else window.location.reload(true);
       }
     }
-  }, [token, id, dispatch]);
+  }, []);
 
   const [nav, setNav] = useState(false);
   const [active, setActive] = useState("");
@@ -108,8 +107,8 @@ const Navigation = () => {
           ))}
         </ul>
         <ul className="flex flex-col gap-2 lg:flex lg:flex-row lg:gap-4 lg:pl-96">
-          {token && user.id ? (
-            <div>
+          {token && user.role ? (
+            <div className="lg:flex lg:gap-4">
               <li>
                 <Link to="/profile">Profile</Link>
               </li>

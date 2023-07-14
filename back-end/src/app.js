@@ -13,7 +13,6 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use(morgan("dev")) //morgan imprime en consola las peticiones
-
 app.use(express.json()) // permite que express utilice json
 
 app.use("/",routes)

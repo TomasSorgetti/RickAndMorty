@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const {verifyAccessToken}=require ("../jsw")
-
+const {verifyAccessToken} = require("../middlewares/auth");
 
 const usersRouter = Router();
 
@@ -10,14 +9,9 @@ const {
   userLoginHandler,
 } = require("../handlers/userHandlers");
 
-
-
-
 usersRouter.post("/", postUserHandler);
 usersRouter.post("/login", userLoginHandler);
 
-
-usersRouter.get("/detail/:id", getUserByIdHandler);
-
+usersRouter.get("/detail/", verifyAccessToken, getUserByIdHandler);
 
 module.exports = usersRouter;

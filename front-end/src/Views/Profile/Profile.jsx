@@ -8,34 +8,37 @@ const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector(state => state)
-  
   const token = localStorage.getItem("token")
-  const id = localStorage.getItem("userId");
+  const userData = user.response
 
   useEffect(() => {
-    if (token && id) {
+    if (token) {
       try {
-        dispatch(getUserData(id, token));
+        dispatch(getUserData(token));
       } catch (error) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        if (window.location.pathname !== "/") navigate("/");
-        else window.location.reload(true);
+        console.log("profile",error);
+        // localStorage.removeItem("token");
+        // if (window.location.pathname !== "/") navigate("/");
+        // else window.location.reload(true);
       }
     }
   },[])
-  return <div>
-    {user ?
-      <div>
-        <h1>Welcome {user.name}</h1>
+  return (
+    <div>
+      {userData ? (
         <div>
-        {user.image&&<img src={user.image} alt={user.name} />} 
+          <h1>Welcome {userData.name}</h1>
+          <p>{userData.id}</p>
+          <div>
+            {userData.image && <img src={userData.image} alt={userData.name} />}
+          </div>
+          <h2>Favorites</h2>
         </div>
-        <h2>Favorites</h2>        
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
-    : <div>Loading...</div>  
-  }
-  </div>;
+  );
 }
 
 export default Profile

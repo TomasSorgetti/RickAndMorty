@@ -3,12 +3,17 @@ import axios from "axios";
 
 export const getData = (URL_API) => {
   return async (dispatch) => {
-    await axios.get(URL_API).then((response) => {
-      dispatch({
-        type: GET_DATA,
-        payload: response.data,
+    await axios
+      .get(URL_API)
+      .then((response) => {
+        dispatch({
+          type: GET_DATA,
+          payload: response.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
   };
 };
 export const getDataByName = (name) => {
@@ -25,7 +30,7 @@ export const getDetail = (URL_DETAIL) => {
         type: GET_DETAIL,
         payload: response.data,
       });
-    });
+    })
   };
 };
 
@@ -40,18 +45,22 @@ export const getEpisode = (URL_EPISODE) => {
   };
 };
 
-export const getUserData = (id,token) => {
+export const getUserData = (token) => {
   return (dispatch) => {
-    axios.get(`http://localhost:3001/users/detail/${id}`, {
-      headers: {
-        Authorization:`Bearer ${token}`,
-      }
-    })
+    axios
+      .get(`http://localhost:3001/users/detail`, {
+        headers: {
+          authorization: token,
+        },
+      })
       .then((response) => {
-      dispatch({
-        type: GET_USER,
-        payload: response.data,
+        dispatch({
+          type: GET_USER,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        console.error("action error",error);
       });
-    });
   };
 };

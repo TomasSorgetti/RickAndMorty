@@ -12,10 +12,11 @@ const Detail = () => {
     
 
   useEffect(() => {
-    dispatch(getDetail(URL_DETAIL));
+    if (id) {     
+      dispatch(getDetail(URL_DETAIL));
+    }
   }, []);
     
-
   return (
     <div>
       {detail.id ? (
@@ -28,7 +29,6 @@ const Detail = () => {
             />
           </div>
           <p>Specie:{detail.species}</p>
-          <p>Episodes:({detail.episode.length})</p>
           <p>Gender:{detail.gender}</p>
           <p>Status:{detail.status}</p>
         </>

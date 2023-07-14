@@ -7,7 +7,7 @@ const {
 //*************create user and login***************//
 const userLoginHandler = async (req, res) => {
   const { name, password } = req.body;
-
+  
   try {
     const response = await loginUser(name, password);
     res.status(200).json(response);
@@ -29,11 +29,12 @@ const postUserHandler = async (req, res) => {
 //************* get users and user by id **************//
 
 const getUserByIdHandler = async (req, res) => {
-  const { id } = req.params
-  console.log(req.headers["authorization"]);
+  const { id,role } = req.user
   try {
-    const response = await getUserById(id)
-    res.status(200).json(response)
+    if (id) {
+      const response = await getUserById(id)
+      res.status(200).json({ response, role });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

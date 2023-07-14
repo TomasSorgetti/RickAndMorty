@@ -2,10 +2,7 @@ const { user } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const {refreshToken}=require("../jsw")
 const { ADMIN_PASSWORD, ADMIN_NAME, SECRET } = process.env;
-
-
 
 //**************** Login *****************//
 
@@ -14,16 +11,18 @@ const loginUser = async (name, password) => {
   if (userVerification) {
     const match = await bcrypt.compare(password, userVerification.password);
     if (match) {
-      const token = jwt.sign({ id: user.id, name: user.name }, SECRET, {
-        expiresIn: "1m",
-      });
+      const token = jwt.sign(
+        { id: userVerification.id, role: userVerification.role },
+        SECRET,
+        {
+          expiresIn: "1y",
+        }
+      );
       // const refresh = await refreshToken(userVerification.id);
-      return { token, id: userVerification.id };
+      return { token, role: userVerification.role };
     }
   }
-}
-
-
+};
 
 //**************** Create ****************//
 const postUser = async (name, password) => {
@@ -37,20 +36,13 @@ const postUser = async (name, password) => {
   return userWithoutPassword;
 };
 
-
-
 //***************** GET ********************//
 const getUserById = async (id) => {
-  // const publicKey = fs.readFileSync("public.pem", "utf8");
-  // console.log("publicKey", publicKey);
+  const res = await user.findOne({ where: { id } });
+  const { password, role, ...userWithoutSensitiveData } = res.toJSON();
 
-  // const decoded = jwt.verify(token, publicKey);
-
-  return await user.findOne({ where: { id } }); 
-
+  return userWithoutSensitiveData;
 };
-
-
 
 
 module.exports = {

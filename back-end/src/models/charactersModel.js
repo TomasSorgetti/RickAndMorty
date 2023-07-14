@@ -1,9 +1,8 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcrypt");
 
 module.exports = (sequelize) => {
-  const User = sequelize.define(
-    "user",
+  const characters = sequelize.define(
+    "characters",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -16,30 +15,28 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       image: {
         type: DataTypes.TEXT,
       },
-      role: {
+      species: {
         type: DataTypes.STRING,
-        defaultValue: "user",
+        allowNull: false,
+      },
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {
       timestamps: true,
       freezeTableName: true,
-      tableName: "user",
+      tableName: "characters",
     }
   );
 
-  User.beforeCreate((user) => {
-    user.password = user.password ? bcrypt.hashSync(user.password, 10) : null;
-  });
-
-  
-
-  return User;
+  return characters;
 };

@@ -15,7 +15,8 @@ const Home = () => {
     const dispatch = useDispatch();
   const { data } = useSelector((state) => state);
   const URL_API = "https://rickandmortyapi.com/api/character";
-    useEffect(() => {
+
+  useEffect(() => {
       dispatch(getData(URL_API));
     }, []);
 

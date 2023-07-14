@@ -3,7 +3,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom";
 
 
-const Login = () => {
+const Login = ({login, setLogin}) => {
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
@@ -24,20 +24,24 @@ const Login = () => {
 
   const handleSubmit = async () => { 
     if (form.name && form.password) {
-      try {
-        await axios.post("http://localhost:3001/users/login", form)
+        await axios
+          .post("http://localhost:3001/users/login", form)
           .then((response) => {
-          const token = response.data.token;
-            const userId = response.data.id;
-          localStorage.setItem("token", token);
-            localStorage.setItem("userId", userId);
-            if (token && userId) {
-              navigate("/")
+            const token = response.data.token;
+            localStorage.setItem("token", token);
+            if (token ) {
+              if (window.location.pathname !== "/") {
+                navigate("/")
+                setTimeout(() => {
+                  window.location.reload(true);
+                }, 10);
+              }
             }
-        })  
-      } catch (error) {
-        throw new Error ("error login")
-      }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
     }
   }
   
