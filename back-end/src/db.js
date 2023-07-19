@@ -3,8 +3,8 @@ const { Sequelize } = require("sequelize");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 const userModel = require("./models/userModel");
-const favoritesModel = require("./models/favoritesModel");
-const characterModel = require("./models/charactersModel")
+const charactersModel = require("./models/charactersModel")
+const postsModel = require("./models/postsModel")
 
 const sequelize = new Sequelize(
     `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
@@ -12,16 +12,16 @@ const sequelize = new Sequelize(
 );
 
 userModel(sequelize)
-favoritesModel(sequelize)
-characterModel(sequelize);
+charactersModel(sequelize);
+postsModel(sequelize);
 
-const { user, favorites, characters } = sequelize.models;
-
-user.hasMany(favorites)
-favorites.hasMany(user)
+const { user, characters, posts } = sequelize.models;
 
 user.hasMany(characters)
 characters.hasMany(user)
+
+user.hasMany(posts)
+posts.belongsTo(user)
 
 module.exports = {
     ...sequelize.models,

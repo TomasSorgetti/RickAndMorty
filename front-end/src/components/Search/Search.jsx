@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { getDataByName } from "../../redux/actions/actions";
-const Search = () => {
-    const dispatch = useDispatch()
+
+const Search = ({ setSearch, handleChange }) => {
   const [form, setForm] = useState({
     name: "",
   });
-  const handleChange = (event) => {
+  const handleFormChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-
+    setSearch(value);
     setForm({ ...form, [property]: value });
-    };
-    const handleSubmit = () => {
-      dispatch(getDataByName(form.name))
-    }
+  };
+
+  const resetForm = () => {
+    setForm({
+      name: "",
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleChange()
+    resetForm();
+  };
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
-        onChange={(event) => handleChange(event)}
+        onChange={(event) => handleFormChange(event)}
         type="text"
         name="name"
         value={form.name}
       />
-      <button type="button" onClick={handleSubmit}>
-        Search
-      </button>
+      <button type="submit">Search</button>
     </form>
   );
 };

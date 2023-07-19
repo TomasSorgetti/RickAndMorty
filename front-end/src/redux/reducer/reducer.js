@@ -25,10 +25,9 @@ const rootReducer = (state = initialState, action) => {
       if (action.payload === "") {
         return {
           ...state,
-          data:state.dataCopy
-        }
+          data: state.dataCopy,
+        };
       }
-
       return {
         ...state,
         data: {

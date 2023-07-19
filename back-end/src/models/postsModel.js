@@ -1,8 +1,9 @@
 const { DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
 
 module.exports = (sequelize) => {
-  const favorites = sequelize.define(
-    "favorites",
+  const Posts = sequelize.define(
+    "posts",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -10,16 +11,21 @@ module.exports = (sequelize) => {
         allowNull: false,
         autoIncrement: true,
       },
-      idChar: {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      post: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
       freezeTableName: true,
-      tableName: "favorites",
+      tableName: "posts",
     }
   );
-  return favorites;
+
+  return Posts;
 };

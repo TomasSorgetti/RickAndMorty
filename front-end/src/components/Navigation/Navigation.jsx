@@ -1,16 +1,36 @@
 //imports react
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserData } from "../../redux/actions/actions";
+import axios from "axios";
+
 import Swal from "sweetalert2";
 
 const Navigation = () => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state);
+  const [user, setUser] = useState({});
   const token = localStorage.getItem("token");
 
+
+    useEffect(() => {
+      if (token) {
+        try {
+          axios
+            .get(`http://localhost:3001/users/detail`, {
+              headers: {
+                authorization: token,
+              },
+            })
+            .then((response) => {
+              if (response) setUser(response.data);
+            });
+        } catch (error) {
+          console.log("profile", error);
+        }
+      }
+      return
+    }, []);
+  
     const handleLogout = (e) => {
       Swal.fire({
         title: "Are you sure to logout?",
@@ -25,20 +45,6 @@ const Navigation = () => {
         }
       });
   };
-  
-  useEffect(() => {
-    if (token) {
-      try {
-        dispatch(getUserData(token));
-        
-      } catch (error) {
-        console.log("nav",error);
-        // localStorage.removeItem("token");
-        // if (window.location.pathname !== "/") navigate("/");
-        // else window.location.reload(true);
-      }
-    }
-  }, []);
 
   const [nav, setNav] = useState(false);
   const [active, setActive] = useState("");
@@ -58,6 +64,11 @@ const Navigation = () => {
       id: 3,
       label: "Episodes",
       route: "/episodes",
+    },
+    {
+      id: 4,
+      label: "Blog",
+      route: "/blog",
     },
   ];
   const handleClick = () => {
@@ -112,11 +123,6 @@ const Navigation = () => {
               <li>
                 <Link to="/profile">Profile</Link>
               </li>
-              {user.role === "admin" && (
-                <li>
-                  <Link to="/create">Create</Link>
-                </li>
-              )}
               <li>
                 <button type="button" onClick={(e) => handleLogout(e)}>
                   Logout

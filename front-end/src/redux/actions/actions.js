@@ -1,4 +1,10 @@
-import { GET_DATA,GET_DATA_BY_NAME, GET_DETAIL, GET_EPISODES, GET_USER } from "./actionTypes";
+import {
+  GET_DATA,
+  GET_DATA_BY_NAME,
+  GET_DETAIL,
+  GET_EPISODES,
+  GET_USER,
+} from "./actionTypes";
 import axios from "axios";
 
 export const getData = (URL_API) => {

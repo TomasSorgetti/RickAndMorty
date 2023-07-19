@@ -28,7 +28,9 @@ const Login = ({login, setLogin}) => {
           .post("http://localhost:3001/users/login", form)
           .then((response) => {
             const token = response.data.token;
+            const userId = response.data.id;
             localStorage.setItem("token", token);
+            localStorage.setItem("userId", userId);
             if (token ) {
               if (window.location.pathname !== "/") {
                 navigate("/")
@@ -74,6 +76,7 @@ const Login = ({login, setLogin}) => {
               value={form.password}
             />
           </div>
+          <a className="underline text-gray-700" href="/createUser">you dont have account?</a>
         </article>
         <div>
           <button

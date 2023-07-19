@@ -8,15 +8,13 @@ import Navigation from "./components/Navigation/Navigation";
 import Footer from "./components/Footer/Footer";
 import Detail from "./Views/Detail/Detail";
 import Login from "./Views/Login/Login";
-import Create from "./Views/Create/Create";
 import Profile from "./Views/Profile/Profile";
 import Locations from "./Views/Locations/Locations";
 import Episodes from "./Views/Episodes/Episodes";
 import CreateUser from "./Views/CreateUser/CreateUser";
-import { useSelector } from "react-redux";
+import Blog from "./Views/Blog/Blog"
 function App() {
   const token = localStorage.getItem("token");
-  const { user } = useSelector((state) => state);
 
   
   return (
@@ -28,13 +26,11 @@ function App() {
         <Route path="/episodes" element={<Episodes />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/createUser" element={<CreateUser />} />
+        <Route path="/blog" element={<Blog />} />
         <Route
           path="/login"
           element={<Login/>}
         />
-        {token && user.role === "admin" && (
-          <Route path="/create" element={<Create />} />
-        )}
         {token && <Route path="/profile" element={<Profile />} />}
       </Routes>
       <Footer />

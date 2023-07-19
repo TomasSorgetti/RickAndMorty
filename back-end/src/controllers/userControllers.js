@@ -19,7 +19,7 @@ const loginUser = async (name, password) => {
         }
       );
       // const refresh = await refreshToken(userVerification.id);
-      return { token, role: userVerification.role };
+      return { token, id: userVerification.id, role: userVerification.role };
     }
   }
 };

@@ -1,44 +1,69 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import {getUserData} from "../../redux/actions/actions"
-import { useNavigate } from 'react-router-dom';
-
+import React, { useEffect,useState } from "react";
+import Card from "../../components/Card/Card";
+import axios from "axios";
+import Cards from "../../components/Cards/Cards";
 
 const Profile = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { user } = useSelector(state => state)
-  const token = localStorage.getItem("token")
-  const userData = user.response
+  const [fav, setFav] = useState([])
+  const [user, setUser] = useState({})
+
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (token) {
       try {
-        dispatch(getUserData(token));
+        axios
+          .get(`http://localhost:3001/users/detail`, {
+            headers: {
+              authorization: token,
+            },
+          })
+          .then((response) => {
+            if(response)setUser(response.data.response)
+          });
       } catch (error) {
-        console.log("profile",error);
-        // localStorage.removeItem("token");
-        // if (window.location.pathname !== "/") navigate("/");
-        // else window.location.reload(true);
+        console.log("profile", error);
       }
     }
-  },[])
+  }, []);
+
+  useEffect(() => {
+    const getFav = async () => {
+      if (userId && token) {
+        await axios
+        .get(`http://localhost:3001/character/getChar/${userId}`)
+        .then((res) => {
+          setFav(res.data);
+        })
+        .catch((err) => {
+          console.log("get favorites error", err);
+        });
+      }
+      return
+    };
+    
+      getFav();
+  }, []);
+
   return (
     <div>
-      {userData ? (
+      {user ? (
         <div>
-          <h1>Welcome {userData.name}</h1>
-          <p>{userData.id}</p>
-          <div>
-            {userData.image && <img src={userData.image} alt={userData.name} />}
-          </div>
+          <h1>Welcome {user.name}</h1>
+          <div>{user.image && <img src={user.image} alt={user.name} />}</div>
           <h2>Favorites</h2>
+          {fav.length ? (
+            <Cards characters={fav} />
+          ) : (
+            <div>You dont have any favorite added</div>
+          )}
         </div>
       ) : (
         <div>Loading...</div>
       )}
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;
