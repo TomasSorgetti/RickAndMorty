@@ -104,7 +104,7 @@ const Navigation = () => {
           !nav ? " hidden" : ""
         }`}
       >
-        <ul className="flex flex-col gap-2 lg:flex lg:flex-row lg:gap-4">
+        <ul className="flex flex-col gap-2 lg:flex lg:flex-row lg:gap-4 items-center">
           {links?.map(({ id, label, route }) => (
             <li key={id}>
               <Link

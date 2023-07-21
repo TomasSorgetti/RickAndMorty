@@ -14,6 +14,6 @@ postsRouter.get("/", getAllPosts)
 
 postsRouter.delete("/:id", deletePost)
 
-postsRouter.put("/:id", updatePost)
+postsRouter.put("/", updatePost)
 
 module.exports = postsRouter;

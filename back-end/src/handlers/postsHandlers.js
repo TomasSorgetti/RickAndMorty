@@ -36,9 +36,9 @@ const deletePost = async (req, res) => {
     }
 }
 const updatePost = async (req, res) => {
-    const { id } = req.params;
+    const { post,id } = req.body;
     try {
-        const response = await updatePostById(id)
+        const response = await updatePostById(id, post);
         res.status(200).json(response);
     } catch (error) {
       res.status(400).json({ error: error.message });

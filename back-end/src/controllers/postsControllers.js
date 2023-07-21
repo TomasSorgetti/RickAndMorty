@@ -17,8 +17,13 @@ const deletePostById = async (id) => {
   }
   return
 };
-const updatePostById = async (id) => {
-  
+const updatePostById = async (id,post) => {
+  const res = await posts.findOne({ where: { id } })
+  if (!res) return
+  else {
+    res.post = post
+    return await res.save()
+  }
 };
 
 

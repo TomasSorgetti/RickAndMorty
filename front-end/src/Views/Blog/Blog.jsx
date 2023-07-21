@@ -1,23 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Post from "../../components/Post/Post";
-
-const posts = [
-  {
-    id: 1,
-    userId: 1,
-    name: "rick",
-    post: "morty se la come",
-    date: "18/07/2023",
-  },
-  {
-    id: 2,
-    userId: 2,
-    name: "morty",
-    post: "el de arriba es gay",
-    date: "18/07/2023",
-  },
-];
 const Blog = () => {
   const [user, setUser] = useState({});
   const [posteos, setPosteos] = useState([]);
@@ -50,7 +33,8 @@ const Blog = () => {
     try {
       axios.get(`http://localhost:3001/posts`).then((response) => {
         if (response) {
-          setPosteos(response.data.toReversed());
+          if (!posteos.length || posteos !== response.data.toReversed())
+            setPosteos(response.data.toReversed());
         }
       });
     } catch (error) {
@@ -95,7 +79,7 @@ const Blog = () => {
                 placeholder="rick is the best character"
                 name="post"
                 value={form.post}
-                className="text-black h-20 rounded"
+                className="text-black h-20 rounded px-2"
               ></textarea>
               <div className="flex justify-center">
                 <button type="submit" className="bg-gray-600 px-4 py-1 rounded">
